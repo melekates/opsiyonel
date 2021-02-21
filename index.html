@@ -1,0 +1,99 @@
+<html>
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <style>
+        .gorunmez {
+            display: none;
+            margin-top: 20px;
+        }
+
+        label {
+            white-space: pre-wrap;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container col-md-6">
+        <p class="h3">Çekiliş Uygulaması</p>
+
+        <div class="form-group">
+            <label class="form-control mt-2"><b>Çekilişe katılan isimleri isim1,isim2 formatında yazınız.</b></label>
+            <input class="form-control mt-2" type="text" id="kullanicilar">
+        </div>
+        <div class="form-group">
+            <label class="form-control mt-2"><b>Verilecek hediyeleri hediye1,hediye2 formatında yazınız.</b></label>
+            <input class="form-control mt-2" type="text" id="hediyeler">
+
+        </div>
+        <button class="btn btn-primary mt-2" onclick="cekilisYap()">Çekiliş yap</button>
+        <div class="form-group">
+            <label class="form-control gorunmez" for="katilimcilar" id="katilimcilarLabel" class="gorunmez"></label>            
+            <label class="form-control gorunmez" for="hediyeler" id="hediyelerLabel" class="gorunmez"></label>
+            <label class="form-control gorunmez" label for="cekilisSonucu" id="cekilisSonucuLabel"></label>
+        </div>
+    </div>
+    </form>
+    <script>
+        function cekilisYap() {
+            document.getElementById("cekilisSonucuLabel").innerText = "Çekiliş Sonucu";
+            document.getElementById("katilimcilarLabel").innerText = " Katilimcilar:";
+            document.getElementById("hediyelerLabel").innerText = "Hediyeler:";
+
+            const inputKatilimcilar = document.getElementById("kullanicilar");
+            const inputHediyeler = document.getElementById("hediyeler")
+            let cekilisSonucu = "";
+
+            let katilimcilar = inputKatilimcilar.value.split(',');
+            let katilimciSayisi = katilimcilar.length;
+            let hediyeler = inputHediyeler.value.split(',');
+            let hediyeSayisi = hediyeler.length;
+            katilimcilar.forEach(katilimci => {
+                document.getElementById("katilimcilarLabel").append('\n' + katilimci);
+
+            });
+            hediyeler.forEach(hediye => {
+                document.getElementById("hediyelerLabel").append("\n" + hediye);
+            });
+
+            let donguSayisi = hediyeSayisi;
+            if (hediyeSayisi > katilimciSayisi) {
+                donguSayisi = katilimciSayisi;
+            }
+            for (let i = donguSayisi - 1; i >= 0; i--) {
+                let fark = katilimciSayisi - 10;
+                let randomKatilimci = getRndInteger(0, katilimciSayisi - 1)
+                let randomHediye = getRndInteger(0, hediyeSayisi - 1)
+                cekilisSonucu = cekilisSonucu + "\n" + katilimcilar[randomKatilimci] + "----" + hediyeler[randomHediye]
+                hediyeler.splice(randomHediye, 1);
+                katilimcilar.splice(randomKatilimci, 1);
+                katilimciSayisi--;
+                hediyeSayisi--;
+            }
+            document.getElementById("cekilisSonucuLabel").append(cekilisSonucu)
+            goster();
+
+        }
+
+        function getRndInteger(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        function goster() {
+            katilimcilarLabel.style.display = 'block';
+            hediyelerLabel.style.display = 'block';
+            cekilisSonucuLabel.style.display = 'block';
+        }
+    </script>
+
+
+</body>
+
+</html>
